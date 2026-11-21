@@ -1,6 +1,7 @@
 // Shared UI building blocks: escaping, formatting, product cards, quick view, modal, toasts.
 import { state, cart, wishlist } from './store.js';
 import { catalog } from './api.js';
+import { flyToBag } from './effects.js';
 
 export const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export const inr = (n) => `₹${Number(n).toLocaleString('en-IN')}`;
@@ -140,6 +141,7 @@ export async function quickView(slug) {
       btn.classList.add('is-loading');
       try {
         await cart.add(p.id, size, 1);
+        flyToBag(card.querySelector('.qv-media img'));
         closeModal();
         toast(`Added to bag · ${esc(p.name)}`, { image: img(p.images[0]), link: { href: '/bag', label: 'View bag' } });
       } catch (err) { $('#qvNote', card).textContent = err.message; } finally { btn.classList.remove('is-loading'); }

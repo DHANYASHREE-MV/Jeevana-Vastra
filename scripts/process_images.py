@@ -85,6 +85,28 @@ def frame(im, key):
     return ImageOps.fit(im, (W, H), Image.LANCZOS, centering=(0.5, 0.42))
 
 
+def remove_corner_sparkle(im):
+    """Gemini app images carry small sparkle marks in the bottom-right corner, on plain studio
+    background. Pixels in that corner that are brighter than their row's background are replaced
+    with the row's background colour (row median), so only the marks change."""
+    w, h = im.size
+    x0, y0 = int(w * 0.76), int(h * 0.80)
+    region = im.crop((x0, y0, w, h))
+    px = region.load()
+    rw, rh = region.size
+    for y in range(rh):
+        row = sorted(px[x, y] for x in range(rw))
+        bg = row[len(row) // 2]
+        lum_bg = sum(bg)
+        for x in range(rw):
+            if sum(px[x, y]) > lum_bg + 12:
+                px[x, y] = bg
+    region = region.filter(ImageFilter.SMOOTH)
+    out = im.copy()
+    out.paste(region, (x0, y0))
+    return out
+
+
 for p in catalog["products"]:
     for n, ref in enumerate(p["src"]):
         key = resolve(ref)
@@ -100,7 +122,7 @@ for p in catalog["products"]:
     # Human-approved AI mannequin presentation (scripts/mannequin.js) -> "<slug>-mq" image set
     mq = os.path.join(root, "server", "data", "mannequin", "approved", f"{p['slug']}.png")
     if os.path.exists(mq):
-        m = Image.open(mq).convert("RGB")
+        m = remove_corner_sparkle(Image.open(mq).convert("RGB"))
         framed = ImageOps.fit(m, (W, H), Image.LANCZOS, centering=(0.5, 0.45))
         base = os.path.join(out, f"{p['slug']}-mq")
         framed.resize((480, 640), Image.LANCZOS).save(base + "-480.webp", "WEBP", quality=80, method=6)

@@ -693,9 +693,9 @@ svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width:
 @media (max-width: 1200px) { .studio { grid-template-columns: 300px 1fr; } .studio-side { grid-column: 1 / -1; } }
 @media (max-width: 860px) {
   .studio { grid-template-columns: 1fr; }
-  .studio-picker { position: static; max-height: none; order: 2; }
+  .studio-picker { position: static; max-height: none; order: 1; }
   .picker-list { grid-auto-flow: column; grid-auto-columns: 132px; grid-template-columns: none; overflow-x: auto; }
-  .studio-stage { order: 1; }
+  .studio-stage { order: 2; }
   .studio-side { order: 3; }
 }
 

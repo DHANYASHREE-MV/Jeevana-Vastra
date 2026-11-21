@@ -1,4 +1,5 @@
 import { catalog } from '../api.js';
+import { flyToBag } from '../effects.js';
 import { cart, wishlist } from '../store.js';
 import { $, $$, esc, inr, img, icons, priceHtml, productCard, setMeta, toast, COLOR_HEX, absUrl } from '../ui.js';
 
@@ -126,6 +127,7 @@ export async function render({ el, params }) {
     btn.classList.add('is-loading');
     try {
       await cart.add(p.id, size, qty);
+      flyToBag($('#mainPic', el));
       toast(`Added to bag · ${esc(p.name)} (${size})`, { image: img(p.images[0]), link: { href: '/bag', label: 'View bag' } });
     } catch (err) { toast(esc(err.message), { type: 'error' }); } finally { btn.classList.remove('is-loading'); }
   };

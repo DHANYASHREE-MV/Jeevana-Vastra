@@ -1,5 +1,6 @@
 // App shell: client-side router, header, search, drawer and global listeners.
 import * as store from './store.js';
+import { initEffects } from './effects.js';
 import { catalog } from './api.js';
 import { $, $$, esc, inr, img, closeModal, toast, bindCardActions, BASE, toUrl, appPath } from './ui.js';
 
@@ -128,4 +129,5 @@ $('#year').textContent = new Date().getFullYear();
 $('#newsletter').addEventListener('submit', (e) => { e.preventDefault(); e.target.reset(); toast('Thank you — you are on the list for early access.'); });
 
 // ---------- Boot ----------
+initEffects();
 store.init().catch((e) => console.error('state init failed', e)).finally(render);

@@ -4,3 +4,4 @@ server/data/*.db*
 server/data/mannequin/review/
 dist/
 .claude/
+server/data/mannequin/approved/
