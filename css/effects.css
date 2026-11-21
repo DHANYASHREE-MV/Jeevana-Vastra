@@ -166,7 +166,7 @@ html.fx .card.in { animation: cardIn .8s var(--ease) both; }
 /* ==========================================================================
    Try-On studio — dark atelier theme
    ========================================================================== */
-.studio-page { background: var(--night); color: #F7EEDD; position: relative; isolation: isolate; overflow: hidden; }
+.studio-page { background: var(--night); color: #F7EEDD; position: relative; isolation: isolate; overflow: clip; }
 .studio-page .studio-hero { background: transparent; padding-bottom: 20px; }
 .studio-page .studio-hero::after { display: none; }
 .studio-page .studio-col { background: rgba(255, 255, 255, .045); border: 1px solid rgba(255, 255, 255, .1); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); color: #F7EEDD; box-shadow: 0 30px 80px -40px rgba(0, 0, 0, .8); }

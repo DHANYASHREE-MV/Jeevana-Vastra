@@ -8,7 +8,7 @@ import { materialsFor, matches, swatchStyle } from '../materials.js';
 
 // AI pipeline steps shown while a look is being created (on-device stage messages map onto these).
 const AI_STEPS = ['Loading AI models', 'Reading your pose', 'Isolating the fabric', 'Mapping the drape', 'Rendering your look'];
-const STEP_OF = { 'Loading on-device AI models…': 0, 'Detecting your pose…': 1, 'Extracting the garment…': 2, 'Fitting the drape to your body…': 3, 'Rendering your look…': 4 };
+const STEP_OF = { 'Loading on-device AI models…': 0, 'Detecting your pose…': 1, 'Extracting the garment…': 2, 'Fitting the drape to your body…': 3, 'Rendering your look…': 4, 'Uploading to the photoreal AI…': 0, 'Waiting for a free AI GPU…': 1, 'Draping the garment on you…': 3 };
 
 const FILTERS = [['all', 'All'], ['sarees', 'Sarees'], ['kurta-sets', 'Kurta sets'], ['dresses', 'Anarkalis'], ['kurtis', 'Kurtis'], ['co-ord-sets', 'Co-ords']];
 const LOOKS_KEY = 'jv_saved_looks';
@@ -24,7 +24,7 @@ export async function render({ el, query, navigate }) {
     photo: null,          // { canvas, dataUrl, key }
     results: new Map(),   // `${mode}:${slug}` -> dataUrl
     view: 'compare',
-    mode: config.cloud ? 'cloud' : 'local',
+    mode: config.cloud ? 'cloud' : 'hf',
     busy: false,
     stream: null,
     size: null,
@@ -39,7 +39,7 @@ export async function render({ el, query, navigate }) {
       <span class="ai-badge"><i></i> AI Atelier · Virtual Try-On</span>
       <h1 class="glitch" data-text="Wear it before you buy it.">Wear it <span class="grad">before</span> you buy it.</h1>
       <p>Choose a material, pick any piece from the catalogue and add your photo. Our AI reads your pose, maps the drape and dresses you. Switch outfits instantly, compare before and after, and save your looks.</p>
-      <span class="engine-pill"><i></i>${config.cloud ? `Photoreal cloud AI: ${esc(config.providers.map((p) => p.label).join(', '))}` : 'On-device AI: pose detection + garment segmentation, runs privately in your browser'}</span>
+      <span class="engine-pill"><i></i>${config.cloud ? `Photoreal cloud AI: ${esc(config.providers.map((p) => p.label).join(', '))}` : 'Photoreal generative AI (IDM-VTON) · instant on-device AI as backup'}</span>
     </div>
   </section>
   <div class="container">
@@ -77,7 +77,8 @@ export async function render({ el, query, navigate }) {
         <h2><span class="n">3</span>Love it? Shop it</h2>
         <div id="selected"></div>
         <div class="mode-switch">
-          <label class="mode"><input type="radio" name="mode" value="cloud" ${config.cloud ? '' : 'disabled'} ${s.mode === 'cloud' ? 'checked' : ''}><span><b>Photoreal (cloud AI)</b><small>${config.cloud ? 'Generative try-on with realistic drape, folds and lighting.' : 'Not enabled on this store yet: add an AI provider key on the server.'}</small></span></label>
+          ${config.cloud ? `<label class="mode"><input type="radio" name="mode" value="cloud" ${s.mode === 'cloud' ? 'checked' : ''}><span><b>Photoreal (premium AI)</b><small>Generative try-on with realistic drape, folds and lighting.</small></span></label>` : ''}
+          <label class="mode"><input type="radio" name="mode" value="hf" ${s.mode === 'hf' ? 'checked' : ''}><span><b>Photoreal (free AI · beta)</b><small>Redraws the outfit on you with realistic folds and lighting, in about 15–60 s. Your photo is sent to a free public AI service (IDM-VTON on Hugging Face) to create the look. Best results with a full-length photo.</small></span></label>
           <label class="mode"><input type="radio" name="mode" value="local" ${s.mode === 'local' ? 'checked' : ''}><span><b>Instant (on-device AI)</b><small>Pose-aware garment fitting that runs in your browser. Your photo never leaves your device.</small></span></label>
         </div>
         <div id="savedWrap"></div>
@@ -256,6 +257,9 @@ export async function render({ el, query, navigate }) {
     const p = s.product;
     let mode = s.mode;
     if (mode === 'local' && p.flatlay) {
+      mode = 'hf';
+    }
+    if (mode === 'local' && p.flatlay) {
       if (config.cloud) mode = 'cloud';
       else {
         drawStage(`<div class="processing"><div style="max-width:360px"><b>This piece is photographed flat</b><small>The on-device engine needs a garment shown on a model. Flat-lay drapes like this saree need the photoreal cloud AI. Pick a style without the "Photoreal only" tag to try it now.</small></div></div>`);
@@ -267,17 +271,22 @@ export async function render({ el, query, navigate }) {
     if (s.results.has(k)) { s.mode = mode; drawStage(); return; }
 
     s.busy = true;
-    drawStage(processingHtml(mode === 'cloud' ? 'Weaving your look with AI…' : 'Preparing on-device AI…', mode));
+    drawStage(processingHtml(mode === 'local' ? 'Preparing on-device AI…' : 'Weaving your look with AI…', mode === 'local' ? 'local' : 'cloud'));
     startPct();
     let cloudTick = null;
     const stage = (m) => { const e = $('#stageMsg', frame); if (e) e.textContent = m; if (m in STEP_OF) setStep(STEP_OF[m]); };
-    if (mode === 'cloud') { let i = 0; cloudTick = setInterval(() => { i = Math.min(4, i + 1); setStep(i); }, 4000); }
+    if (mode !== 'local') { let i = 0; cloudTick = setInterval(() => { i = Math.min(4, i + 1); setStep(i); }, mode === 'hf' ? 7000 : 4000); }
     try {
       let image;
       if (mode === 'cloud') {
         stage('Draping the garment on you…');
         const r = await api.post('/tryon', { productSlug: p.slug, personImage: s.photo.dataUrl });
         image = r.image;
+      } else if (mode === 'hf') {
+        const { tryOnHF } = await import('../tryon/hf-engine.js');
+        // A clean garment reference works best: the mannequin view when there is one, else the product photo.
+        const ref = p.images.find((i) => i.endsWith('-mq')) || p.tryonImage || p.images[0];
+        image = await tryOnHF({ personDataUrl: s.photo.dataUrl, garmentUrl: `img/products/${ref}.jpg`, description: `${p.color} ${p.name}, ${p.fabric}`, onStage: stage });
       } else {
         const { tryOnLocal } = await import('../tryon/local-engine.js');
         image = await tryOnLocal({ personCanvas: s.photo.canvas, personKey: s.photo.key, product: p, garmentUrl: img(p.tryonImage || p.images[0], 1080), onStage: stage });
@@ -292,16 +301,23 @@ export async function render({ el, query, navigate }) {
       clearInterval(cloudTick); stopPct();
       s.busy = false;
       console.error(err);
-      // Cloud AI unavailable (quota, network, provider error): fall back to the on-device engine automatically.
-      if (mode === 'cloud' && !p.flatlay && !s.cloudFailed) {
-        s.cloudFailed = true;
-        s.mode = 'local';
-        $$('input[name="mode"]', el).forEach((r) => { r.checked = r.value === 'local'; });
-        toast('Photoreal AI is busy right now, so we switched to the instant on-device AI');
+      // AI chain: premium cloud -> free photoreal -> instant on-device. Fall back automatically.
+      if (mode === 'cloud') {
+        s.mode = 'hf';
+        $$('input[name="mode"]', el).forEach((r) => { r.checked = r.value === 'hf'; });
+        toast('Premium AI is unavailable, so we are using the free photoreal AI');
         generate();
         return;
       }
-      const fallback = mode === 'cloud' && !p.flatlay ? '<button class="btn btn-sm" data-act="use-local" style="margin-top:14px">Try the instant on-device mode</button>' : '';
+      if (mode === 'hf' && !p.flatlay && !s.hfAutoFallback) {
+        s.hfAutoFallback = true;
+        s.mode = 'local';
+        $$('input[name="mode"]', el).forEach((r) => { r.checked = r.value === 'local'; });
+        toast(`${esc(err.message)} Showing the instant on-device look instead.`);
+        generate();
+        return;
+      }
+      const fallback = mode !== 'local' && !p.flatlay ? '<button class="btn btn-sm" data-act="use-local" style="margin-top:14px">Try the instant on-device mode</button>' : '';
       drawStage(`<div class="processing"><div style="max-width:380px"><b>We couldn't create this look</b><small>${esc(err.message)}</small>
         <div class="stage-actions"><button class="btn btn-sm" data-act="retry">Try again</button><button class="btn btn-outline btn-sm" data-act="upload">Use another photo</button></div>${fallback}</div></div>`);
     }
