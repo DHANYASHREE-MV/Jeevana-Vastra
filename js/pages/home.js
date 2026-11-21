@@ -1,5 +1,8 @@
 import { catalog } from '../api.js';
-import { $, $$, esc, img, icons, productCard, skeletonCards, setMeta, observeReveal } from '../ui.js';
+import { $, $$, esc, inr, img, icons, productCard, skeletonCards, setMeta, observeReveal } from '../ui.js';
+import { materialsFor, swatchStyle } from '../materials.js';
+
+const MARQUEE = ['Kanjivaram silks', 'Kalamkari', 'Zari & brocade', 'Organza', 'Anarkalis', 'AI Virtual Try-On'];
 
 const SLIDES = [
   { image: 'raktha-kalamkari-silk-saree-0', eyebrow: 'The Festive Edit · 2026', title: 'Draped in <em>heritage</em>,<br>made for today', text: 'Kalamkari pallus, temple borders and soft silks — our newest sarees, handpicked from India\'s weaving clusters.', cta: ['shop/sarees', 'Shop sarees'] },
@@ -33,6 +36,10 @@ export async function render({ el }) {
     <div class="hero-dots" role="tablist">${SLIDES.map((_, i) => `<button role="tab" aria-label="Slide ${i + 1}" class="${i === 0 ? 'active' : ''}" data-slide="${i}"></button>`).join('')}</div>
   </section>
 
+  <div class="marquee" aria-hidden="true"><div class="marquee-track">
+    ${MARQUEE.concat(MARQUEE).map((t, i) => `<span class="${i % 2 ? 'outline' : ''}">${t}</span>`).join('')}
+  </div></div>
+
   <section class="section container">
     <div class="section-head center" style="justify-content:center">
       <div><span class="eyebrow">Shop by category</span><h2>Curated for every occasion</h2><div class="ornament">✦</div></div>
@@ -48,24 +55,39 @@ export async function render({ el }) {
     <div class="rail" id="newRail">${skeletonCards(4)}</div>
   </section>
 
-  <section class="tryon-band section">
-    <div class="container">
+  <section class="runway">
+    <div class="container section-head" style="margin-bottom:0">
+      <div><span class="eyebrow">The Runway</span><h2>Every drape, styled</h2><p>Our sarees and sets on the atelier mannequin. Hover to explore, tap to shop.</p></div>
+      <div class="rail-nav"><button data-runway="-1" aria-label="Previous">${icons.left}</button><button data-runway="1" aria-label="Next">${icons.right}</button></div>
+    </div>
+    <div class="runway-track" id="runway"></div>
+  </section>
+
+  <section class="atelier dark-zone" id="atelier">
+    <div class="aurora"></div><div class="holo-grid"></div><div class="noise"></div>
+    <canvas class="particles" id="particles"></canvas>
+    <div class="container atelier-inner">
       <div class="reveal">
-        <span class="eyebrow">✦ Our signature feature</span>
-        <h2>The <em>Virtual Try-On</em> Studio</h2>
-        <p>Not sure how a colour or drape will suit you? Upload a photo or use your camera, and see any saree or kurta set from our catalogue on you, powered by AI.</p>
-        <ol class="tryon-steps">
-          <li>Pick any outfit from the catalogue</li>
-          <li>Upload a photo or take one with your camera</li>
-          <li>Compare before &amp; after, switch outfits, save your look</li>
-        </ol>
-        <a class="btn btn-gold" href="virtual-try-on">${icons.spark} Start trying on</a>
+        <span class="ai-badge"><i></i> AI Atelier · Live</span>
+        <h2 class="glitch" data-text="See it on you.">See it on <span class="grad">you.</span></h2>
+        <p class="lead">Pick a material, choose any piece from our catalogue and upload your photo. Our AI reads your pose, maps the drape and dresses you in seconds.</p>
+        <div class="mat-orbit" id="matOrbit"></div>
+        <a class="atelier-cta" href="virtual-try-on">${icons.spark} Enter the AI Atelier</a>
       </div>
-      <div class="tryon-visual reveal">
-        <figure><img src="${img('gulnaar-peach-anarkali-set-0', 1080)}" alt="Gulnaar Peach Anarkali Set" loading="lazy"><figcaption>Pick an outfit</figcaption></figure>
-        <span class="spark">${icons.spark}</span>
-        <figure><img src="${img('pudina-mint-embroidered-kurta-set-0', 1080)}" alt="Pudina Mint Kurta Set" loading="lazy"><figcaption>See it on you</figcaption></figure>
-      </div>
+      <a class="atelier-stage reveal" href="virtual-try-on" aria-label="Open the AI Atelier">
+        <span class="stage-ring"></span><span class="stage-ring r2"></span>
+        <div class="holo-card" id="holoCard">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <div class="scan-glow"></div><div class="scanline"></div>
+          <div class="pose-dots">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M50 16 L40 26 L60 26 Z M40 26 L44 52 L56 52 L60 26 M44 52 L42 90 M56 52 L58 90"/></svg>
+            <i style="left:50%;top:16%"></i><i style="left:40%;top:26%"></i><i style="left:60%;top:26%"></i><i style="left:44%;top:52%"></i><i style="left:56%;top:52%"></i><i style="left:42%;top:90%"></i><i style="left:58%;top:90%"></i>
+          </div>
+        </div>
+        <span class="hud h1">Pose lock <b>✓ 33 pts</b></span>
+        <span class="hud h2">Material <b id="hudMat">Silk</b></span>
+        <span class="hud h3">Draping <b id="hudName">…</b></span>
+      </a>
     </div>
   </section>
 
@@ -174,6 +196,72 @@ export async function render({ el }) {
     showTab(b.dataset.tab);
   }));
 
+  // Runway lookbook (mannequin views)
+  const styled = products.filter((p) => p.images[0].endsWith('-mq'));
+  $('#runway', el).innerHTML = styled.map((p) => `<a class="runway-item" href="product/${p.slug}">
+      <img src="${img(p.images[0])}" alt="${esc(p.name)} on the atelier mannequin" loading="lazy" width="480" height="640">
+      <span class="rw-cap"><b>${esc(p.name)}</b><small>${inr(p.price)}</small></span></a>`).join('');
+  $$('[data-runway]', el).forEach((b) => b.addEventListener('click', () => {
+    const t = $('#runway', el); t.scrollBy({ left: Number(b.dataset.runway) * t.clientWidth * 0.7, behavior: 'smooth' });
+  }));
+
+  // AI Atelier: material chips + cycling holographic stage
+  const mats = materialsFor(products);
+  $('#matOrbit', el).innerHTML = mats.slice(0, 6).map((m) => `<a class="mat-chip" href="virtual-try-on?material=${m.key}"><span class="sw" style="${swatchStyle(m)}"></span>${esc(m.label)} <small>${m.count}</small></a>`).join('');
+  const holo = $('#holoCard', el);
+  const reel = styled.slice(0, 10);
+  let atelierTimer = null;
+  if (reel.length) atelierTimer = startReel(el, holo, reel, mats);
+  const stopParticles = particles($('#particles', el));
+
   observeReveal(el);
-  return () => clearInterval(timer);
+  return () => { clearInterval(timer); clearInterval(atelierTimer); stopParticles(); };
+}
+
+// Cross-fading mannequin reel inside the holographic card, with HUD labels.
+function startReel(el, holo, reel, mats) {
+  let ri = 0;
+  const first = document.createElement('img');
+  first.alt = ''; first.src = img(reel[0].images[0], 1080);
+  holo.prepend(first);
+  const matOf = (p) => (mats.find((m) => m.re.test(`${p.fabric} ${p.name}`.toLowerCase())) || mats[0]).label;
+  const setHud = (p) => { $('#hudMat', el).textContent = matOf(p); $('#hudName', el).textContent = p.name.split(' ').slice(0, 2).join(' '); };
+  setHud(reel[0]);
+  return setInterval(() => {
+    ri = (ri + 1) % reel.length;
+    const next = new Image(); next.alt = ''; next.className = 'out'; next.src = img(reel[ri].images[0], 1080);
+    next.onload = () => {
+      const prev = holo.querySelector('img');
+      holo.prepend(next);
+      requestAnimationFrame(() => { next.classList.remove('out'); prev?.classList.add('out'); });
+      setTimeout(() => { if (prev && prev.parentNode) prev.parentNode.removeChild(prev); }, 1000);
+      setHud(reel[ri]);
+    };
+    const g = $('.glitch', el);
+    g?.classList.add('flicker'); setTimeout(() => g?.classList.remove('flicker'), 700);
+  }, 3200);
+}
+
+// Golden thread particles drifting upward in the AI Atelier.
+function particles(canvas) {
+  if (!canvas || matchMedia('(prefers-reduced-motion: reduce)').matches) return () => {};
+  const ctx = canvas.getContext('2d');
+  let w; let h; let raf; let visible = true;
+  const dots = Array.from({ length: 55 }, () => ({ x: Math.random(), y: Math.random(), r: 0.4 + Math.random() * 1.1, s: 0.0006 + Math.random() * 0.0016, a: Math.random() * Math.PI * 2 }));
+  const size = () => { const r = canvas.getBoundingClientRect(); w = canvas.width = r.width * devicePixelRatio; h = canvas.height = r.height * devicePixelRatio; };
+  const loop = () => {
+    if (!visible) return;
+    ctx.clearRect(0, 0, w, h);
+    for (const d of dots) {
+      d.y -= d.s; d.a += 0.02; if (d.y < -0.02) { d.y = 1.02; d.x = Math.random(); }
+      const x = (d.x + Math.sin(d.a) * 0.01) * w; const y = d.y * h;
+      ctx.beginPath(); ctx.arc(x, y, d.r * devicePixelRatio, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(243, 201, 122, ${0.15 + 0.4 * Math.abs(Math.sin(d.a))})`; ctx.fill();
+    }
+    raf = requestAnimationFrame(loop);
+  };
+  const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; cancelAnimationFrame(raf); if (visible) loop(); });
+  io.observe(canvas);
+  size(); addEventListener('resize', size);
+  return () => { visible = false; cancelAnimationFrame(raf); io.disconnect(); removeEventListener('resize', size); };
 }

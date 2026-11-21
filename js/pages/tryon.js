@@ -2,7 +2,13 @@
 // Photo (upload / camera) stays in memory; switching garments reuses it. Results are cached per garment.
 import { api, catalog } from '../api.js';
 import { cart } from '../store.js';
+import { flyToBag } from '../effects.js';
 import { $, $$, esc, inr, img, icons, setMeta, toast, toUrl } from '../ui.js';
+import { materialsFor, matches, swatchStyle } from '../materials.js';
+
+// AI pipeline steps shown while a look is being created (on-device stage messages map onto these).
+const AI_STEPS = ['Loading AI models', 'Reading your pose', 'Isolating the fabric', 'Mapping the drape', 'Rendering your look'];
+const STEP_OF = { 'Loading on-device AI models…': 0, 'Detecting your pose…': 1, 'Extracting the garment…': 2, 'Fitting the drape to your body…': 3, 'Rendering your look…': 4 };
 
 const FILTERS = [['all', 'All'], ['sarees', 'Sarees'], ['kurta-sets', 'Kurta sets'], ['dresses', 'Anarkalis'], ['kurtis', 'Kurtis'], ['co-ord-sets', 'Co-ords']];
 const LOOKS_KEY = 'jv_saved_looks';
@@ -14,6 +20,7 @@ export async function render({ el, query, navigate }) {
   const s = {
     product: products.find((p) => p.slug === query.product) || null,
     filter: 'all',
+    material: query.material || 'all',
     photo: null,          // { canvas, dataUrl, key }
     results: new Map(),   // `${mode}:${slug}` -> dataUrl
     view: 'compare',
@@ -24,20 +31,24 @@ export async function render({ el, query, navigate }) {
   };
   if (s.product) s.filter = 'all';
 
-  el.innerHTML = `
+  const mats = materialsFor(products);
+  el.innerHTML = `<div class="studio-page dark-zone">
+  <div class="aurora"></div><div class="holo-grid"></div><div class="noise"></div>
   <section class="studio-hero">
     <div class="container">
-      <span class="eyebrow">✦ Jeevana Vastra Signature</span>
-      <h1>Virtual <em>Try-On</em> Studio</h1>
-      <p>Choose any saree or set from our catalogue, add your photo, and see how it looks on you. Switch outfits instantly, compare before and after, and save your favourite looks.</p>
+      <span class="ai-badge"><i></i> AI Atelier · Virtual Try-On</span>
+      <h1 class="glitch" data-text="Wear it before you buy it.">Wear it <span class="grad">before</span> you buy it.</h1>
+      <p>Choose a material, pick any piece from the catalogue and add your photo. Our AI reads your pose, maps the drape and dresses you. Switch outfits instantly, compare before and after, and save your looks.</p>
       <span class="engine-pill"><i></i>${config.cloud ? `Photoreal cloud AI: ${esc(config.providers.map((p) => p.label).join(', '))}` : 'On-device AI: pose detection + garment segmentation, runs privately in your browser'}</span>
     </div>
   </section>
   <div class="container">
     <div class="studio">
       <aside class="studio-col studio-picker">
-        <h2><span class="n">1</span>Choose an outfit</h2>
-        <p class="sub">${products.length} styles from the catalogue</p>
+        <h2><span class="n">1</span>Material &amp; outfit</h2>
+        <div class="step-label">Select a material</div>
+        <div class="mat-rail" id="matRail"></div>
+        <div class="step-label">Select an outfit <span id="pickCount" style="color:rgba(247,238,221,.5)"></span></div>
         <div class="picker-filters">${FILTERS.map(([k, l]) => `<button data-filter="${k}" class="${k === 'all' ? 'on' : ''}">${l}</button>`).join('')}</div>
         <div class="picker-list" id="picker"></div>
       </aside>
@@ -73,14 +84,22 @@ export async function render({ el, query, navigate }) {
         <div class="privacy">${icons.shield}<span>Your photo is only used to create your look. ${config.cloud ? 'Cloud looks are generated in memory and never stored on our servers.' : 'In on-device mode it never leaves your browser.'} Saved looks stay on this device.</span></div>
       </aside>
     </div>
+  </div>
   </div>`;
 
   const frame = $('#frame', el);
   const fileInput = $('#file', el);
 
   // ---------- picker ----------
+  const drawMaterials = () => {
+    $('#matRail', el).innerHTML = `<button class="mat-chip all ${s.material === 'all' ? 'on' : ''}" data-mat="all"><span class="sw"></span><span><b>All fabrics</b><small>${products.length} styles</small></span></button>`
+      + mats.map((m) => `<button class="mat-chip ${s.material === m.key ? 'on' : ''}" data-mat="${m.key}"><span class="sw" style="${swatchStyle(m)}"></span><span><b>${esc(m.label)}</b><small>${esc(m.note)}</small></span></button>`).join('');
+  };
+  drawMaterials();
   const drawPicker = () => {
-    const list = s.filter === 'all' ? products : products.filter((p) => p.category === s.filter);
+    const list = products.filter((p) => (s.filter === 'all' || p.category === s.filter) && matches(p, s.material));
+    $('#pickCount', el).textContent = `· ${list.length}`;
+    if (!list.length) { $('#picker', el).innerHTML = '<p class="sub" style="grid-column:1/-1">No styles in this material and category yet. Try another combination.</p>'; return; }
     $('#picker', el).innerHTML = list.map((p) => {
       const done = [...s.results.keys()].some((k) => k.endsWith(`:${p.slug}`));
       const localOnly = !config.cloud && p.flatlay;
@@ -142,7 +161,7 @@ export async function render({ el, query, navigate }) {
       return;
     }
     if (!result) {
-      frame.innerHTML = `<div class="single-view"><img src="${s.photo.dataUrl}" alt="Your photo"></div>${overlay || (s.product ? '' : '<div class="processing" style="background:rgba(251,248,243,.55)"><div><b>Now choose an outfit</b><small>Pick any style from the catalogue to try it on.</small></div></div>')}`;
+      frame.innerHTML = `<div class="single-view"><img src="${s.photo.dataUrl}" alt="Your photo"></div>${overlay || (s.product ? '' : '<div class="processing"><div><b>Now choose a material &amp; outfit</b><small>Pick any style from the catalogue to try it on.</small></div></div>')}`;
       return;
     }
     if (s.view === 'compare') {
@@ -155,7 +174,22 @@ export async function render({ el, query, navigate }) {
     }
   };
 
-  const processingHtml = (msg) => `<div class="processing"><div><div class="loom"></div><b id="stageMsg">${esc(msg)}</b><small>${s.mode === 'cloud' ? 'Photoreal looks take about 10–30 seconds' : 'First run downloads the AI models (~10 MB)'}</small></div></div><div class="scan"></div>`;
+  const processingHtml = (msg, mode) => `<div class="ai-hud"><div class="grid-scan"></div></div>
+    <span class="corner tl" style="z-index:6"></span><span class="corner tr" style="z-index:6"></span><span class="corner bl" style="z-index:6"></span><span class="corner br" style="z-index:6"></span>
+    <div class="processing"><div><div class="ai-pct" id="aiPct">0%</div><b id="stageMsg">${esc(msg)}</b>
+      <ol class="ai-steps" id="aiSteps">${AI_STEPS.map((t, i) => `<li class="${i === 0 ? 'on' : ''}">${t}</li>`).join('')}</ol>
+      <small style="display:block;margin-top:12px">${mode === 'cloud' ? 'Photoreal looks take about 10–30 seconds' : 'First run downloads the AI models (~10 MB)'}</small></div></div><div class="scan"></div>`;
+  // Progress: real stage messages advance the steps; the percentage eases toward the current step's ceiling.
+  let pctTimer = null; let pct = 0; let ceiling = 18;
+  const setStep = (i) => {
+    $$('#aiSteps li', frame).forEach((li, k) => { li.className = k < i ? 'done' : k === i ? 'on' : ''; });
+    ceiling = Math.min(96, 18 + i * 20);
+  };
+  const startPct = () => {
+    pct = 0; ceiling = 18; clearInterval(pctTimer);
+    pctTimer = setInterval(() => { pct += (ceiling - pct) * 0.08; const e = $('#aiPct', frame); if (e) e.textContent = `${Math.round(pct)}%`; }, 120);
+  };
+  const stopPct = () => clearInterval(pctTimer);
 
   function bindCompare(box) {
     const set = (clientX) => { const r = box.getBoundingClientRect(); box.style.setProperty('--pos', `${Math.max(0, Math.min(100, ((clientX - r.left) / r.width) * 100))}%`); };
@@ -233,8 +267,11 @@ export async function render({ el, query, navigate }) {
     if (s.results.has(k)) { s.mode = mode; drawStage(); return; }
 
     s.busy = true;
-    drawStage(processingHtml(mode === 'cloud' ? 'Weaving your look with AI…' : 'Preparing on-device AI…'));
-    const stage = (m) => { const e = $('#stageMsg', frame); if (e) e.textContent = m; };
+    drawStage(processingHtml(mode === 'cloud' ? 'Weaving your look with AI…' : 'Preparing on-device AI…', mode));
+    startPct();
+    let cloudTick = null;
+    const stage = (m) => { const e = $('#stageMsg', frame); if (e) e.textContent = m; if (m in STEP_OF) setStep(STEP_OF[m]); };
+    if (mode === 'cloud') { let i = 0; cloudTick = setInterval(() => { i = Math.min(4, i + 1); setStep(i); }, 4000); }
     try {
       let image;
       if (mode === 'cloud') {
@@ -245,14 +282,25 @@ export async function render({ el, query, navigate }) {
         const { tryOnLocal } = await import('../tryon/local-engine.js');
         image = await tryOnLocal({ personCanvas: s.photo.canvas, personKey: s.photo.key, product: p, garmentUrl: img(p.tryonImage || p.images[0], 1080), onStage: stage });
       }
+      clearInterval(cloudTick); stopPct();
       s.results.set(k, image);
       s.mode = mode;
       $$('input[name="mode"]', el).forEach((r) => { r.checked = r.value === mode; });
       s.busy = false;
-      drawStage(); drawPicker();
+      drawStage('<div class="reveal-flash"></div>'); drawPicker();
     } catch (err) {
+      clearInterval(cloudTick); stopPct();
       s.busy = false;
       console.error(err);
+      // Cloud AI unavailable (quota, network, provider error): fall back to the on-device engine automatically.
+      if (mode === 'cloud' && !p.flatlay && !s.cloudFailed) {
+        s.cloudFailed = true;
+        s.mode = 'local';
+        $$('input[name="mode"]', el).forEach((r) => { r.checked = r.value === 'local'; });
+        toast('Photoreal AI is busy right now, so we switched to the instant on-device AI');
+        generate();
+        return;
+      }
       const fallback = mode === 'cloud' && !p.flatlay ? '<button class="btn btn-sm" data-act="use-local" style="margin-top:14px">Try the instant on-device mode</button>' : '';
       drawStage(`<div class="processing"><div style="max-width:380px"><b>We couldn't create this look</b><small>${esc(err.message)}</small><br>${fallback}</div></div>`);
     }
@@ -270,6 +318,8 @@ export async function render({ el, query, navigate }) {
       if (window.innerWidth < 860) frame.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
+    const mt = e.target.closest('[data-mat]');
+    if (mt) { s.material = mt.dataset.mat; drawMaterials(); drawPicker(); return; }
     const f = e.target.closest('[data-filter]');
     if (f) { s.filter = f.dataset.filter; $$('[data-filter]', el).forEach((b) => b.classList.toggle('on', b === f)); drawPicker(); return; }
     const act = e.target.closest('[data-act]')?.dataset.act;
@@ -284,7 +334,7 @@ export async function render({ el, query, navigate }) {
     if (sz) { s.size = sz.dataset.tsize; drawSelected(); }
     if (e.target.closest('#tAdd')) {
       if (!s.size) { toast('Please choose a size first'); return; }
-      try { await cart.add(s.product.id, s.size, 1); toast(`Added to bag · ${esc(s.product.name)} (${s.size})`, { image: img(s.product.images[0]), link: { href: '/bag', label: 'View bag' } }); } catch (err) { toast(esc(err.message), { type: 'error' }); }
+      try { await cart.add(s.product.id, s.size, 1); flyToBag($('.sel-product img', el)); toast(`Added to bag · ${esc(s.product.name)} (${s.size})`, { image: img(s.product.images[0]), link: { href: '/bag', label: 'View bag' } }); } catch (err) { toast(esc(err.message), { type: 'error' }); }
     }
     const look = e.target.closest('[data-look]');
     if (look) {
@@ -342,5 +392,5 @@ export async function render({ el, query, navigate }) {
 
   drawStage();
   if (s.product) frame.scrollIntoView({ block: 'nearest' });
-  return () => { stopCamera(); document.removeEventListener('click', onDelLook); };
+  return () => { stopCamera(); stopPct(); document.removeEventListener('click', onDelLook); };
 }
