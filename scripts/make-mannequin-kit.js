@@ -20,6 +20,7 @@ const items = catalog.products.map((p, i) => {
   return { n, p, photo, save: `${n}-${p.slug}.png`, prompt: mannequinPrompt(p) };
 });
 
+fs.writeFileSync(path.join(out, 'items.json'), JSON.stringify(items.map((it) => ({ n: it.n, name: it.p.name, photo: it.photo, save: it.save, prompt: it.prompt })), null, 1));
 fs.writeFileSync(path.join(out, 'prompts.txt'), items.map((it) =>
   `#${it.n}  ${it.p.name}\nUpload: photos/${it.photo}\nSave result as: ${it.save}\nPrompt:\n${it.prompt}\n`).join('\n----------------------------------------\n\n'));
 
@@ -72,4 +73,9 @@ if(e.target.matches('[data-copyname]'))copy(c.querySelector('.meta code:last-chi
 document.addEventListener('change',e=>{if(!e.target.matches('[data-done]'))return;const n=e.target.closest('.card').dataset.n;e.target.checked?done.add(n):done.delete(n);sync()});
 sync();
 </script></body></html>`);
+// PDF version (needs Python + reportlab); the HTML and TXT versions work without it.
+try {
+  require('node:child_process').execFileSync('python', ['-I', path.join(__dirname, 'make_kit_pdf.py'), path.join(out, 'items.json'), out], { stdio: 'ignore' });
+  console.log('PDF written');
+} catch { console.log('PDF skipped (pip install reportlab to enable)'); }
 console.log(`Kit ready: ${items.length} items → ${out}`);
