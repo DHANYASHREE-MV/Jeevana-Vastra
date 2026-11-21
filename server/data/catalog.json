@@ -1,0 +1,1069 @@
+{
+  "categories": [
+    {
+      "slug": "sarees",
+      "name": "Sarees",
+      "blurb": "Silk, kalamkari and hand-painted drapes",
+      "cover": "mayil-teal-silk-saree"
+    },
+    {
+      "slug": "kurta-sets",
+      "name": "Kurta Sets",
+      "blurb": "Three-piece sets with dupatta",
+      "cover": "pudina-mint-embroidered-kurta-set"
+    },
+    {
+      "slug": "kurtis",
+      "name": "Kurtis",
+      "blurb": "Everyday elegance, effortless fits",
+      "cover": "lavender-chikan-kurti"
+    },
+    {
+      "slug": "dresses",
+      "name": "Anarkalis & Dresses",
+      "blurb": "Flared silhouettes for celebrations",
+      "cover": "gulnaar-peach-anarkali-set"
+    },
+    {
+      "slug": "co-ord-sets",
+      "name": "Co-ord Sets",
+      "blurb": "Modern ethnic, matched to perfection",
+      "cover": "gerua-rust-co-ord-set"
+    }
+  ],
+  "products": [
+    {
+      "slug": "neelambari-floral-organza-saree",
+      "name": "Neelambari Floral Organza Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        0
+      ],
+      "color": "Blue",
+      "fabric": "Organza with zari border",
+      "price": 980,
+      "mrp": 1450,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 88,
+      "age": 3,
+      "flatlay": true,
+      "desc": "Sheer cobalt organza scattered with oversized peach blossoms, finished with a delicate gold zari tassel border. Light enough for long summer functions, striking enough for the evening."
+    },
+    {
+      "slug": "gulabi-hand-painted-floral-saree",
+      "name": "Gulabi Hand-Painted Floral Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        1
+      ],
+      "color": "Pink",
+      "fabric": "Georgette",
+      "price": 980,
+      "mrp": 1350,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new",
+        "trending"
+      ],
+      "pop": 91,
+      "age": 2,
+      "flatlay": true,
+      "desc": "A rani-pink georgette drape with painterly golden florals and a fine woven border. Comes with a matching unstitched blouse piece."
+    },
+    {
+      "slug": "kanchi-zari-brocade-saree",
+      "name": "Kanchi Zari Brocade Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        2
+      ],
+      "color": "Brown",
+      "fabric": "Art silk brocade",
+      "price": 1350,
+      "mrp": 1890,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "bestseller"
+      ],
+      "pop": 95,
+      "age": 30,
+      "flatlay": true,
+      "desc": "All-over copper zari brocade body set against a contrasting jade border — a heritage weave reimagined for weddings and temple visits."
+    },
+    {
+      "slug": "pachai-sivappu-silk-saree",
+      "name": "Pachai Sivappu Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        3
+      ],
+      "color": "Green",
+      "fabric": "Soft silk",
+      "price": 1180,
+      "mrp": 1650,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 79,
+      "age": 5,
+      "flatlay": true,
+      "desc": "Bottle green with a bold vermilion pallu and scattered gold mango buttis. The classic South Indian contrast, in an easy-drape soft silk."
+    },
+    {
+      "slug": "kesari-paisley-mirror-saree",
+      "name": "Kesari Paisley Mirror-Work Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        4
+      ],
+      "color": "Orange",
+      "fabric": "Chanderi blend",
+      "price": 1350,
+      "mrp": 1750,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "trending"
+      ],
+      "pop": 84,
+      "age": 9,
+      "flatlay": true,
+      "desc": "Saffron paisleys traced in gold, studded with tiny mirrors and finished with tasselled corners. Festive, joyful and light on the shoulder."
+    },
+    {
+      "slug": "kalamkari-maroon-border-saree",
+      "name": "Kalamkari Maroon Border Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        25
+      ],
+      "color": "Maroon",
+      "fabric": "Silk blend with kalamkari border",
+      "price": 1580,
+      "mrp": 2200,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "bestseller"
+      ],
+      "pop": 93,
+      "age": 40,
+      "flatlay": true,
+      "desc": "Deep maroon body framed by a storytelling kalamkari border of florals and figures. A collector's drape for those who love craft."
+    },
+    {
+      "slug": "ivory-kalamkari-pallu-saree",
+      "name": "Ivory Kalamkari Pallu Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        21
+      ],
+      "color": "Ivory",
+      "fabric": "Cotton silk",
+      "price": 1450,
+      "mrp": 1990,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "trending"
+      ],
+      "pop": 87,
+      "age": 12,
+      "desc": "Soft ivory cotton silk with a hand-block kalamkari pallu and border in terracotta and indigo. Understated, airy and endlessly elegant."
+    },
+    {
+      "slug": "mayil-teal-silk-saree",
+      "name": "Mayil Teal Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        22
+      ],
+      "color": "Teal",
+      "fabric": "Kanjivaram-style silk",
+      "price": 2450,
+      "mrp": 3200,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "bestseller",
+        "trending"
+      ],
+      "pop": 98,
+      "age": 20,
+      "desc": "Peacock teal and rose-gold interlaced in a rich Kanjivaram-style weave with a broad temple border. Made for the main event."
+    },
+    {
+      "slug": "tamra-copper-silk-saree",
+      "name": "Tamra Copper Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        23
+      ],
+      "color": "Copper",
+      "fabric": "Banarasi-style silk",
+      "price": 1990,
+      "mrp": 2690,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 76,
+      "age": 4,
+      "desc": "Burnished copper silk with a dense jaal of zari and a deep green border — luminous in lamplight, perfect for evening receptions."
+    },
+    {
+      "slug": "agni-tassel-silk-saree",
+      "name": "Agni Tassel Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        24
+      ],
+      "color": "Red",
+      "fabric": "Soft silk with tassels",
+      "price": 1750,
+      "mrp": 2350,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "trending"
+      ],
+      "pop": 90,
+      "age": 14,
+      "desc": "Fiery vermilion and tangerine silk with a woven gold jaal and playful tasselled pallu. A celebration in six yards."
+    },
+    {
+      "slug": "samudra-teal-silk-saree",
+      "name": "Samudra Teal Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        26
+      ],
+      "color": "Teal",
+      "fabric": "Pure-finish silk",
+      "price": 2290,
+      "mrp": 2990,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "bestseller"
+      ],
+      "pop": 92,
+      "age": 25,
+      "desc": "Ocean teal silk with gold mango buttis and a regal purple-and-gold border. A timeless wedding-season staple."
+    },
+    {
+      "slug": "raktha-kalamkari-silk-saree",
+      "name": "Raktha Kalamkari Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        27
+      ],
+      "color": "Red",
+      "fabric": "Silk with kalamkari pallu",
+      "price": 2150,
+      "mrp": 2850,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new",
+        "trending"
+      ],
+      "pop": 89,
+      "age": 1,
+      "desc": "Crimson silk paired with a multi-colour kalamkari pallu and border — tradition, artistry and colour in one drape."
+    },
+    {
+      "slug": "shyama-black-kalamkari-saree",
+      "name": "Shyama Black Kalamkari Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        28
+      ],
+      "color": "Black",
+      "fabric": "Silk blend",
+      "price": 2150,
+      "mrp": 2850,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 82,
+      "age": 2,
+      "desc": "Midnight black silk with a jewel-toned kalamkari border and pallu. Dramatic, modern and deeply rooted."
+    },
+    {
+      "slug": "kanakambaram-teal-border-silk-saree",
+      "name": "Kanakambaram Teal Border Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B0"
+      ],
+      "color": "Peach",
+      "fabric": "Soft silk with zari brocade",
+      "price": 1850,
+      "mrp": 2490,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 84,
+      "age": 1,
+      "flatlay": true,
+      "desc": "Glowing kanakambaram-peach silk woven with gold and teal floral buttas, framed by a broad teal-and-gold brocade border. A festive classic with a fresh palette."
+    },
+    {
+      "slug": "rose-brocade-silk-saree",
+      "name": "Rose Brocade Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B1"
+      ],
+      "color": "Pink",
+      "fabric": "Art silk with zari",
+      "price": 1650,
+      "mrp": 2250,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new",
+        "trending"
+      ],
+      "pop": 88,
+      "age": 1,
+      "flatlay": true,
+      "desc": "Soft rose-pink silk with delicate zari motifs and a rich brocade pallu edged in purple. Lustrous, light and made for daytime celebrations."
+    },
+    {
+      "slug": "maroon-gold-butta-silk-saree",
+      "name": "Maroon Gold Butta Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B2"
+      ],
+      "color": "Maroon",
+      "fabric": "Soft silk with zari buttas",
+      "price": 1750,
+      "mrp": 2390,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new",
+        "bestseller"
+      ],
+      "pop": 90,
+      "age": 2,
+      "flatlay": true,
+      "desc": "Deep maroon silk scattered with bold gold floral buttas and finished with a contrast lilac-gold pallu. Timeless wedding-guest elegance."
+    },
+    {
+      "slug": "sindoor-orange-silk-saree",
+      "name": "Sindoor Orange Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B3"
+      ],
+      "color": "Orange",
+      "fabric": "Soft silk with contrast border",
+      "price": 1590,
+      "mrp": 2150,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 82,
+      "age": 2,
+      "flatlay": true,
+      "desc": "Vibrant sindoor orange with tonal paisley buttas and a regal purple-and-gold border. Bright, joyful and festival-ready."
+    },
+    {
+      "slug": "kumkum-red-silk-saree",
+      "name": "Kumkum Red Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B4"
+      ],
+      "color": "Red",
+      "fabric": "Soft silk with temple border",
+      "price": 1690,
+      "mrp": 2290,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 85,
+      "age": 2,
+      "flatlay": true,
+      "desc": "Kumkum red silk with subtle self-weave and a broad green-and-gold temple border. The auspicious red, beautifully done."
+    },
+    {
+      "slug": "mustard-teal-pallu-silk-saree",
+      "name": "Mustard Teal Pallu Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B5"
+      ],
+      "color": "Mustard",
+      "fabric": "Soft silk with brocade pallu",
+      "price": 1890,
+      "mrp": 2550,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new",
+        "trending"
+      ],
+      "pop": 89,
+      "age": 1,
+      "flatlay": true,
+      "desc": "Warm mustard body with a woven gold motif and a striking teal brocade pallu. A confident, contemporary contrast."
+    },
+    {
+      "slug": "silver-rose-jaal-silk-saree",
+      "name": "Silver Rose Jaal Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B6"
+      ],
+      "color": "Grey",
+      "fabric": "Tissue silk with floral jaal",
+      "price": 1990,
+      "mrp": 2690,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 80,
+      "age": 3,
+      "flatlay": true,
+      "desc": "Shimmering silver tissue covered in a pink rose jaal, finished with a rani-pink zari border. Soft glamour for evening functions."
+    },
+    {
+      "slug": "neela-rose-silk-saree",
+      "name": "Neela Rose Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B7"
+      ],
+      "color": "Blue",
+      "fabric": "Soft silk with contrast pallu",
+      "price": 1750,
+      "mrp": 2390,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 81,
+      "age": 3,
+      "flatlay": true,
+      "desc": "Royal blue silk with tonal rose motifs and a contrast magenta-and-gold pallu. Rich colour with a soft sheen."
+    },
+    {
+      "slug": "peach-bel-silk-saree",
+      "name": "Peach Bel Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B8"
+      ],
+      "color": "Peach",
+      "fabric": "Soft silk with zari bel",
+      "price": 1790,
+      "mrp": 2450,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new",
+        "bestseller"
+      ],
+      "pop": 91,
+      "age": 2,
+      "flatlay": true,
+      "desc": "Peach silk woven with an all-over gold bel (vine) pattern, finished with a deep green-and-gold border and a bright teal edge."
+    },
+    {
+      "slug": "jamuni-checks-silk-saree",
+      "name": "Jamuni Checks Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B9"
+      ],
+      "color": "Purple",
+      "fabric": "Silk with zari checks",
+      "price": 2190,
+      "mrp": 2950,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new",
+        "trending"
+      ],
+      "pop": 92,
+      "age": 1,
+      "flatlay": true,
+      "desc": "Jamuni purple silk with fine gold checks and woven paisley buttas, paired with a cream brocade blouse piece. Arrives gift-boxed."
+    },
+    {
+      "slug": "lal-checks-silk-saree",
+      "name": "Lal Checks Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B10"
+      ],
+      "color": "Red",
+      "fabric": "Silk with zari checks",
+      "price": 2190,
+      "mrp": 2950,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 87,
+      "age": 1,
+      "flatlay": true,
+      "desc": "Bridal red silk with gold zari checks and lotus buttas, paired with a cream embellished blouse piece. Arrives gift-boxed."
+    },
+    {
+      "slug": "magenta-checks-tassel-silk-saree",
+      "name": "Magenta Checks Tassel Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B11"
+      ],
+      "color": "Magenta",
+      "fabric": "Silk with zari checks and tassels",
+      "price": 2290,
+      "mrp": 3090,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 86,
+      "age": 2,
+      "flatlay": true,
+      "desc": "Rich magenta silk with fine zari checks, a woven border and tasselled pallu, with a cream embroidered blouse piece."
+    },
+    {
+      "slug": "pacchai-checks-silk-saree",
+      "name": "Pacchai Checks Silk Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B12"
+      ],
+      "color": "Green",
+      "fabric": "Silk with zari checks",
+      "price": 2190,
+      "mrp": 2950,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new",
+        "bestseller"
+      ],
+      "pop": 90,
+      "age": 1,
+      "flatlay": true,
+      "desc": "Emerald pacchai silk with gold checks and paisley buttas, with an ivory embellished blouse piece. Arrives gift-boxed."
+    },
+    {
+      "slug": "apricot-jaal-banarasi-saree",
+      "name": "Apricot Jaal Banarasi Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B13"
+      ],
+      "color": "Peach",
+      "fabric": "Banarasi-style silk",
+      "price": 1490,
+      "mrp": 1990,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 79,
+      "age": 4,
+      "flatlay": true,
+      "desc": "Soft apricot Banarasi-style silk with an all-over tonal floral jaal. Graceful, light and easy to drape."
+    },
+    {
+      "slug": "gulabi-bel-tassel-saree",
+      "name": "Gulabi Bel Tassel Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B14"
+      ],
+      "color": "Pink",
+      "fabric": "Soft silk with tassels",
+      "price": 1590,
+      "mrp": 2150,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new",
+        "trending"
+      ],
+      "pop": 86,
+      "age": 3,
+      "flatlay": true,
+      "desc": "Candy-pink silk with a silver-gold bel pattern, a woven border and tasselled pallu. Sweet, festive and photogenic."
+    },
+    {
+      "slug": "onion-pink-jaal-saree",
+      "name": "Onion Pink Jaal Saree",
+      "category": "sarees",
+      "garment": "saree",
+      "src": [
+        "B15"
+      ],
+      "color": "Rose",
+      "fabric": "Silk with zari jaal",
+      "price": 1690,
+      "mrp": 2290,
+      "sizes": [
+        "Free Size"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 83,
+      "age": 3,
+      "flatlay": true,
+      "desc": "Dusty onion-pink silk with a gold swirl jaal and a delicate woven border with tassels. Subtle, sophisticated shimmer."
+    },
+    {
+      "slug": "jamuni-printed-kurta-set",
+      "name": "Jamuni Printed Kurta Set",
+      "category": "kurta-sets",
+      "garment": "kurta",
+      "src": [
+        5,
+        8
+      ],
+      "color": "Purple",
+      "fabric": "Cotton blend",
+      "price": 1500,
+      "mrp": 2100,
+      "sizes": [
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "tags": [
+        "bestseller"
+      ],
+      "pop": 94,
+      "age": 22,
+      "desc": "A plum geometric-print straight kurta with matching pants and a contrast block-print dupatta. Everyday elegance that travels from office to evening."
+    },
+    {
+      "slug": "rani-pink-printed-kurta-set",
+      "name": "Rani Pink Printed Kurta Set",
+      "category": "kurta-sets",
+      "garment": "kurta",
+      "src": [
+        6
+      ],
+      "color": "Pink",
+      "fabric": "Rayon",
+      "price": 1800,
+      "mrp": 2400,
+      "sizes": [
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "tags": [
+        "trending"
+      ],
+      "pop": 86,
+      "age": 10,
+      "desc": "Fuchsia chevron print with a gota-trim yoke, straight pants and a lightweight printed dupatta."
+    },
+    {
+      "slug": "raat-black-embroidered-palazzo-set",
+      "name": "Raat Black Embroidered Palazzo Set",
+      "category": "kurta-sets",
+      "garment": "kurta",
+      "src": [
+        9
+      ],
+      "color": "Black",
+      "fabric": "Georgette with thread work",
+      "price": 2800,
+      "mrp": 3600,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "tags": [
+        "bestseller"
+      ],
+      "pop": 97,
+      "age": 18,
+      "desc": "Jet-black georgette kurta with antique-gold thread embroidery, flowing palazzo and sheer embroidered dupatta. Party-ready in one piece."
+    },
+    {
+      "slug": "chitrakatha-printed-kurta-set",
+      "name": "Chitrakatha Printed Kurta Set",
+      "category": "kurta-sets",
+      "garment": "kurta",
+      "src": [
+        11,
+        10
+      ],
+      "color": "Red",
+      "fabric": "Muslin",
+      "price": 2500,
+      "mrp": 3200,
+      "sizes": [
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 83,
+      "age": 6,
+      "desc": "Story-print muslin kurta in brick red and coral, with matching pants and an Ikat-patterned dupatta."
+    },
+    {
+      "slug": "aadhya-peach-kurta-set",
+      "name": "Aadhya Peach Kurta Set",
+      "category": "kurta-sets",
+      "garment": "kurta",
+      "src": [
+        12
+      ],
+      "color": "Peach",
+      "fabric": "Chanderi",
+      "price": 2650,
+      "mrp": 3300,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 80,
+      "age": 3,
+      "desc": "Soft peach chanderi with tonal embroidery, straight pants and a scalloped organza dupatta."
+    },
+    {
+      "slug": "pudina-mint-embroidered-kurta-set",
+      "name": "Pudina Mint Embroidered Kurta Set",
+      "category": "kurta-sets",
+      "garment": "kurta",
+      "src": [
+        14
+      ],
+      "color": "Mint",
+      "fabric": "Cotton silk",
+      "price": 2950,
+      "mrp": 3700,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "tags": [
+        "trending"
+      ],
+      "pop": 91,
+      "age": 8,
+      "desc": "Fresh mint kurta with tone-on-tone floral embroidery along the placket and hem, paired with matching pants and dupatta."
+    },
+    {
+      "slug": "sandhya-peach-dupatta-set",
+      "name": "Sandhya Peach Embroidered Dupatta Set",
+      "category": "kurta-sets",
+      "garment": "kurta",
+      "src": [
+        15
+      ],
+      "color": "Peach",
+      "fabric": "Organza & cotton",
+      "price": 3000,
+      "mrp": 3800,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "tags": [
+        "bestseller"
+      ],
+      "pop": 90,
+      "age": 16,
+      "desc": "A blush kurta set elevated by an organza dupatta with a hand-embroidered floral motif. Wedding-guest perfect."
+    },
+    {
+      "slug": "gulabi-organza-kurta-set",
+      "name": "Gulabi Organza Kurta Set",
+      "category": "kurta-sets",
+      "garment": "kurta",
+      "src": [
+        19
+      ],
+      "color": "Pink",
+      "fabric": "Organza",
+      "price": 3450,
+      "mrp": 4300,
+      "sizes": [
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "3XL"
+      ],
+      "tags": [
+        "new",
+        "trending"
+      ],
+      "pop": 85,
+      "age": 4,
+      "desc": "Powder-pink organza with delicate floral print, layered over a soft lining, finished with a sheer floral dupatta."
+    },
+    {
+      "slug": "chandni-white-kurta-set",
+      "name": "Chandni White Kurta Set",
+      "category": "kurta-sets",
+      "garment": "kurta",
+      "src": [
+        20
+      ],
+      "color": "White",
+      "fabric": "Cotton",
+      "price": 2100,
+      "mrp": 2700,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "tags": [],
+      "pop": 78,
+      "age": 28,
+      "desc": "Crisp white cotton with espresso floral embroidery and a statement printed dupatta — monochrome, made modern."
+    },
+    {
+      "slug": "firozi-yoke-kurti",
+      "name": "Firozi Yoke Embroidered Kurti",
+      "category": "kurtis",
+      "garment": "kurti",
+      "src": [
+        7
+      ],
+      "color": "Turquoise",
+      "fabric": "Rayon",
+      "price": 650,
+      "mrp": 899,
+      "sizes": [
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "tags": [
+        "bestseller"
+      ],
+      "pop": 96,
+      "age": 35,
+      "flatlay": true,
+      "desc": "A breezy turquoise straight kurti with a tonal embroidered yoke and three-quarter sleeves. Your new everyday favourite."
+    },
+    {
+      "slug": "lavender-chikan-kurti",
+      "name": "Lavender Chikan-Style Kurti",
+      "category": "kurtis",
+      "garment": "kurti",
+      "src": [
+        16
+      ],
+      "color": "Lavender",
+      "fabric": "Modal",
+      "price": 700,
+      "mrp": 950,
+      "sizes": [
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "tags": [
+        "new",
+        "trending"
+      ],
+      "pop": 89,
+      "age": 7,
+      "desc": "Soft lavender modal with chikankari-inspired thread work running down the front. Light, graceful and easy to style."
+    },
+    {
+      "slug": "gulnaar-peach-anarkali-set",
+      "name": "Gulnaar Peach Anarkali Set",
+      "category": "dresses",
+      "garment": "anarkali",
+      "src": [
+        13
+      ],
+      "color": "Peach",
+      "fabric": "Georgette",
+      "price": 2800,
+      "mrp": 3500,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "tags": [
+        "trending"
+      ],
+      "pop": 92,
+      "age": 11,
+      "desc": "A tiered peach anarkali with a lace-edged hem and floral yoke embroidery, paired with straight pants and a sheer dupatta."
+    },
+    {
+      "slug": "kesar-butti-anarkali-set",
+      "name": "Kesar Butti Anarkali Set",
+      "category": "dresses",
+      "garment": "anarkali",
+      "src": [
+        17
+      ],
+      "color": "Cream",
+      "fabric": "Cotton",
+      "price": 1850,
+      "mrp": 2400,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "tags": [
+        "new"
+      ],
+      "pop": 84,
+      "age": 5,
+      "desc": "Cream anarkali with hand-block red butti motifs, matching pants and a contrast printed dupatta."
+    },
+    {
+      "slug": "gerua-rust-co-ord-set",
+      "name": "Gerua Rust Embroidered Co-ord Set",
+      "category": "co-ord-sets",
+      "garment": "coord",
+      "src": [
+        18
+      ],
+      "color": "Rust",
+      "fabric": "Linen blend",
+      "price": 1600,
+      "mrp": 2200,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "tags": [
+        "new",
+        "trending"
+      ],
+      "pop": 87,
+      "age": 6,
+      "desc": "A relaxed rust shirt-kurta with floral thread embroidery and matching straight pants. Ethnic, but make it modern."
+    }
+  ]
+}

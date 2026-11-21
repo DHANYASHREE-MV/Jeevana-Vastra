@@ -1,0 +1,22 @@
+{
+  "name": "jeevana-vastra",
+  "version": "1.0.0",
+  "description": "Jeevana Vastra: premium ethnic fashion e-commerce with AI Virtual Try-On",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node --no-warnings server/index.js",
+    "dev": "node --no-warnings --watch server/index.js",
+    "images": "python -I scripts/process_images.py",
+    "mannequin": "node --no-warnings scripts/mannequin.js",
+    "build:static": "node --no-warnings scripts/build-static.js",
+    "preview:static": "node scripts/preview-static.js"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.13"
+  }
+}
