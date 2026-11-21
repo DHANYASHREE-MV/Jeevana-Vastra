@@ -9,7 +9,9 @@
     "images": "python -I scripts/process_images.py",
     "mannequin": "node --no-warnings scripts/mannequin.js",
     "build:static": "node --no-warnings scripts/build-static.js",
-    "preview:static": "node scripts/preview-static.js"
+    "preview:static": "node scripts/preview-static.js",
+    "mannequin:kit": "node scripts/make-mannequin-kit.js",
+    "mannequin:import": "node scripts/import-mannequins.js"
   },
   "type": "commonjs",
   "dependencies": {

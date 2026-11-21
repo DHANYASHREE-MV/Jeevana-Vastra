@@ -64,11 +64,7 @@ if (!gemini.available()) {
   process.exit(1);
 }
 
-const POSE = 'Front view, full length from neckline to hem, centred, the same standard upright mannequin pose for every item. Soft even studio lighting, seamless warm ivory (#F6F1E9) background, subtle floor shadow, 3:4 portrait framing.';
-const STYLE = {
-  saree: 'Drape it on a realistic matte ivory headless 3D dress-form mannequin in a classic Nivi drape: pleats at the front, pallu over the left shoulder falling to the knee so the pallu design and border are clearly visible, with a plain blouse matching the blouse piece if one is shown.',
-  default: 'Dress a realistic matte ivory headless 3D dress-form mannequin in the complete outfit (kurta/top, bottom and dupatta if present), keeping the natural garment shape and length.',
-};
+const { mannequinPrompt } = require('./mannequin-prompts');
 
 (async () => {
   let targets = catalog.products;
@@ -81,15 +77,7 @@ const STYLE = {
   for (const p of targets) {
     const file = path.join(ROOT, 'public', 'img', 'products', `${p.slug}-0.jpg`);
     const garment = `data:image/jpeg;base64,${fs.readFileSync(file).toString('base64')}`;
-    const source = p.flatlay
-      ? 'The reference photo shows the garment folded / laid flat.'
-      : 'The reference photo shows the garment worn by a model or on a display form. Use ONLY the clothing; do not show the person.';
-    const prompt = [
-      `Professional e-commerce catalogue photo of the exact garment in the reference image ("${p.name}", ${p.color}, ${p.fabric}).`,
-      source, STYLE[p.garment === 'saree' ? 'saree' : 'default'], POSE,
-      'AUTHENTICITY IS CRITICAL: reproduce the garment exactly as photographed: identical colours, print, motifs, embroidery, zari, border width and pattern, tassels and fabric texture.',
-      'Do not invent, add, remove, simplify or restyle any design element. No props, no text, no logos, no human model.',
-    ].join(' ');
+    const prompt = mannequinPrompt(p);
     process.stdout.write(`${p.slug} … `);
     try {
       const out = await gemini.generate([{ text: prompt }, gemini.img(garment)], { timeoutMs: 180000 });

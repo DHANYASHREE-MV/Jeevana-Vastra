@@ -55,6 +55,13 @@ npm run mannequin -- --approve <slug> ...  # or --approve-all once you're happy
 npm run images -- . "<photo folder A>" "<photo folder B>"   # approved views become photo #1
 ```
 
+**No API billing? Use the Gemini app or Flow instead:**
+
+```bash
+npm run mannequin:kit -- "<folder>"          # photos + copy-paste prompts (Mannequin prompts.html)
+npm run mannequin:import -- "<results.zip>"  # files named NN-... are matched to item #NN
+```
+
 Drafts are never published automatically. Generative models can drift on colours, motifs and borders, so each one needs a human check against the original. The original photo stays in the gallery as image 2, the try-on keeps using real model photos, and flat-lays switch to their mannequin view (which makes them try-on-able on-device).
 
 Back views: the source photos only show fronts (the Jamuni set has two angles), so no back views exist yet. Add photos to `server/data/catalog.json` → `src` and re-run `npm run images`.
