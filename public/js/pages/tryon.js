@@ -302,7 +302,8 @@ export async function render({ el, query, navigate }) {
         return;
       }
       const fallback = mode === 'cloud' && !p.flatlay ? '<button class="btn btn-sm" data-act="use-local" style="margin-top:14px">Try the instant on-device mode</button>' : '';
-      drawStage(`<div class="processing"><div style="max-width:380px"><b>We couldn't create this look</b><small>${esc(err.message)}</small><br>${fallback}</div></div>`);
+      drawStage(`<div class="processing"><div style="max-width:380px"><b>We couldn't create this look</b><small>${esc(err.message)}</small>
+        <div class="stage-actions"><button class="btn btn-sm" data-act="retry">Try again</button><button class="btn btn-outline btn-sm" data-act="upload">Use another photo</button></div>${fallback}</div></div>`);
     }
   }
 
@@ -327,6 +328,7 @@ export async function render({ el, query, navigate }) {
     if (act === 'camera') openCamera();
     if (act === 'cam-cancel') { stopCamera(); drawStage(); }
     if (act === 'shutter') capture();
+    if (act === 'retry') generate();
     if (act === 'use-local') { s.mode = 'local'; $$('input[name="mode"]', el).forEach((r) => { r.checked = r.value === 'local'; }); generate(); }
     const v = e.target.closest('[data-view]');
     if (v) { s.view = v.dataset.view; $$('[data-view]', el).forEach((b) => b.classList.toggle('on', b === v)); drawStage(); }

@@ -23,13 +23,22 @@ let enginePromise = null;
 export function loadEngine() {
   if (!enginePromise) {
     enginePromise = (async () => {
-      const vision = await import(/* webpackIgnore: true */ `${VISION}/vision_bundle.mjs`);
-      const fileset = await vision.FilesetResolver.forVisionTasks(`${VISION}/wasm`);
+      let vision; let fileset;
+      try {
+        vision = await import(/* webpackIgnore: true */ `${VISION}/vision_bundle.mjs`);
+        fileset = await vision.FilesetResolver.forVisionTasks(`${VISION}/wasm`);
+      } catch {
+        throw new Error('The AI models could not be downloaded. Please check your internet connection (or turn off any ad/content blocker for this site) and try again.');
+      }
       const make = async (delegate) => ({
         pose: await vision.PoseLandmarker.createFromOptions(fileset, { baseOptions: { modelAssetPath: POSE_MODEL, delegate }, runningMode: 'IMAGE', numPoses: 1 }),
         seg: await vision.ImageSegmenter.createFromOptions(fileset, { baseOptions: { modelAssetPath: SEG_MODEL, delegate }, runningMode: 'IMAGE', outputCategoryMask: true, outputConfidenceMasks: false }),
       });
-      try { return await make('GPU'); } catch { return make('CPU'); }
+      // Some devices hang (rather than fail) when creating the GPU delegate: give it 20 s, then use the CPU.
+      const timeout = (ms) => new Promise((_, rej) => setTimeout(() => rej(new Error('GPU init timeout')), ms));
+      try { return await Promise.race([make('GPU'), timeout(20000)]); } catch {
+        try { return await make('CPU'); } catch { throw new Error('The AI models could not start on this device. Please try another browser such as Chrome or Edge.'); }
+      }
     })().catch((e) => { enginePromise = null; throw e; });
   }
   return enginePromise;
@@ -322,16 +331,34 @@ function composite(personCanvas, info, warped) {
 const garmentCache = new Map();
 let personCache = { key: null, info: null };
 
+// Selfies and half-body photos: when the hips are out of frame or hidden, place them from the shoulders
+// (torso ≈ 1.6 × shoulder width, hips ≈ 75% of shoulder width), along the body's vertical axis.
+function withEstimatedHips(lm) {
+  if (lm[LM.lh].v > 0.3 && lm[LM.rh].v > 0.3) return lm;
+  const out = lm.map((p) => ({ ...p }));
+  const ls = lm[LM.ls]; const rs = lm[LM.rs];
+  const s = sub(ls, rs); const sw = len(s) || 1;
+  let down = { x: -s.y / sw, y: s.x / sw };
+  if (down.y < 0) down = mul(down, -1);
+  const c = mid(ls, rs);
+  const hipC = add(c, mul(down, sw * 1.6));
+  const half = mul(s, 0.375);
+  out[LM.lh] = { ...add(hipC, half), v: 1 };
+  out[LM.rh] = { ...sub(hipC, half), v: 1 };
+  [LM.lk, LM.rk, LM.la, LM.ra].forEach((i) => { out[i] = { ...out[i], v: 0 }; }); // let bodyRows extrapolate legs
+  return out;
+}
+
 export async function tryOnLocal({ personCanvas, personKey, product, garmentUrl, onStage = () => {} }) {
   onStage('Loading on-device AI models…');
   const engine = await loadEngine();
 
   onStage('Detecting your pose…');
   if (personCache.key !== personKey) personCache = { key: personKey, info: await analyze(engine, personCanvas) };
-  const person = personCache.info;
-  if (!person.lm) throw new Error('We could not find a person in your photo. Please use a clear, front-facing photo showing at least your head to hips.');
-  const vis = [LM.ls, LM.rs, LM.lh, LM.rh].every((i) => person.lm[i].v > 0.3);
-  if (!vis) throw new Error('Please use a photo where your shoulders and hips are visible, facing the camera.');
+  const person = { ...personCache.info };
+  if (!person.lm) throw new Error('We could not find a person in your photo. Please use a clear, front-facing photo of one person, from at least head to waist.');
+  if (!(person.lm[LM.ls].v > 0.3 && person.lm[LM.rs].v > 0.3)) throw new Error('We could not see your shoulders. Please use a front-facing photo from at least head to waist.');
+  person.lm = withEstimatedHips(person.lm);
 
   onStage('Extracting the garment…');
   let garment = garmentCache.get(product.slug);
