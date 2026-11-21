@@ -67,11 +67,13 @@ GitHub Pages can't run the Node server, so `npm run build:static` makes a browse
 - Virtual Try-On uses the on-device engine.
 
 ```bash
-npm run build:static -- --base jeevana-vastra --site https://<user>.github.io/jeevana-vastra
-npm run preview:static -- jeevana-vastra     # test at http://localhost:4000/jeevana-vastra/
+npm run build:static -- --base Jeevana-Vastra --site https://dhanyashree-mv.github.io/Jeevana-Vastra
+npm run preview:static -- Jeevana-Vastra     # test at http://localhost:4000/Jeevana-Vastra/
 ```
 
 Publish `dist/` to the `gh-pages` branch. Deep links work through `404.html`.
+
+Live site: https://dhanyashree-mv.github.io/Jeevana-Vastra/
 
 ## Structure
 
