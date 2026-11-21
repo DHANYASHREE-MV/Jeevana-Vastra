@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dhanyashree-mv.github.io/Jeevana-Vastra/sitemap.xml
