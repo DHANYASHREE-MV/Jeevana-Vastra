@@ -12,6 +12,7 @@ const routes = [
   [/^\/virtual-try-on\/?$/, 'tryon'],
   [/^\/bag\/?$/, 'bag'],
   [/^\/wishlist\/?$/, 'wishlist'],
+  [/^\/contact\/?$/, 'contact'],
   [/^\/checkout\/?$/, 'checkout'],
   [/^\/account\/?$/, 'account', [], { tab: 'profile' }],
   [/^\/account\/(orders|addresses|wishlist|profile)\/?$/, 'account', ['tab']],
