@@ -40,14 +40,14 @@ const html = fs.readFileSync(path.join(PUBLIC, 'index.html'), 'utf8')
   .replace('<title>Jeevana Vastra</title>', '<title>Jeevana Vastra — Premium Indian Ethnic Wear</title>')
   .replace('<script type="module" src="js/app.js"></script>', '<script>window.JV_STATIC = true;</script>\n  <script type="module" src="js/app.js"></script>')
   .replace(/__DESC__/g, desc)
-  .replace(/__IMAGE__/g, `${site}/img/products/mayil-teal-silk-saree-0-1080.webp`)
+  .replace(/__IMAGE__/g, `${site}/img/site/og-image.jpg`)
   .replace(/__URL__/g, `${site}/`);
 if (!html.includes('JV_STATIC')) throw new Error('Could not inject static flag into index.html');
 fs.writeFileSync(path.join(DIST, 'index.html'), html);
 fs.writeFileSync(path.join(DIST, '404.html'), html); // GitHub Pages SPA fallback for deep links
 fs.writeFileSync(path.join(DIST, '.nojekyll'), '');
 
-const urls = ['', 'shop', 'virtual-try-on', ...categories.map((c) => `shop/${c.slug}`), ...products.map((p) => `product/${p.slug}`)];
+const urls = ['', 'shop', 'virtual-try-on', 'contact', ...categories.map((c) => `shop/${c.slug}`), ...products.map((p) => `product/${p.slug}`)];
 fs.writeFileSync(path.join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map((u) => `<url><loc>${site}/${u}</loc></url>`).join('')}</urlset>\n`);
 fs.writeFileSync(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${site}/sitemap.xml\n`);
 

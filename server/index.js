@@ -46,7 +46,7 @@ app.use('/api', (req, res) => res.status(404).json({ error: 'Not found' }));
 // SEO: sitemap + robots
 app.get('/robots.txt', (req, res) => res.type('text/plain').send(`User-agent: *\nAllow: /\nDisallow: /account\nDisallow: /checkout\nSitemap: ${SITE_URL}/sitemap.xml\n`));
 app.get('/sitemap.xml', (req, res) => {
-  const urls = ['/', '/shop', '/virtual-try-on', ...db.prepare('SELECT slug FROM categories').all().map((c) => `/shop/${c.slug}`),
+  const urls = ['/', '/shop', '/virtual-try-on', '/contact', ...db.prepare('SELECT slug FROM categories').all().map((c) => `/shop/${c.slug}`),
     ...db.prepare('SELECT slug FROM products').all().map((p) => `/product/${p.slug}`)];
   res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map((u) => `<url><loc>${SITE_URL}${u}</loc></url>`).join('')}</urlset>`);
 });
@@ -64,7 +64,7 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 app.get('*', (req, res) => {
   let title = 'Jeevana Vastra — Premium Indian Ethnic Wear';
   let desc = 'Sarees, kurta sets, kurtis and anarkalis, with an AI Virtual Try-On studio. Handpicked ethnic wear from Jeevana Vastra.';
-  let image = '/img/products/mayil-teal-silk-saree-0-1080.webp';
+  let image = '/img/site/og-image.jpg';
   const m = /^\/product\/([a-z0-9-]+)/.exec(req.path);
   if (m) {
     const p = catalog.toProduct(db.prepare(`${catalog.BASE} WHERE p.slug = ?`).get(m[1]));

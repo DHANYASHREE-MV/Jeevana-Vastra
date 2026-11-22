@@ -27,7 +27,7 @@ function intro() {
   el.setAttribute('aria-hidden', 'true');
   el.innerHTML = `<div class="jv-intro-panel top"></div><div class="jv-intro-panel bottom"></div>
     <div class="jv-intro-mark">
-      <svg viewBox="0 0 40 40"><path d="M20 4c4 6 4 12 0 18-4-6-4-12 0-18Z"/><path d="M20 22c-6-1-11-5-13-11 6 0 11 4 13 11Zm0 0c6-1 11-5 13-11-6 0-11 4-13 11Z"/><path d="M8 28h24M11 32h18M15 36h10"/></svg>
+      <img src="img/site/logo-jv-256.png" alt="">
       <span>Jeevana Vastra</span><small>Ethnic Couture</small>
     </div>`;
   document.body.append(el);
