@@ -46,7 +46,7 @@ app.use('/api', (req, res) => res.status(404).json({ error: 'Not found' }));
 // SEO: sitemap + robots
 app.get('/robots.txt', (req, res) => res.type('text/plain').send(`User-agent: *\nAllow: /\nDisallow: /account\nDisallow: /checkout\nSitemap: ${SITE_URL}/sitemap.xml\n`));
 app.get('/sitemap.xml', (req, res) => {
-  const urls = ['/', '/shop', '/virtual-try-on', '/contact', ...db.prepare('SELECT slug FROM categories').all().map((c) => `/shop/${c.slug}`),
+  const urls = ['/', '/shop', '/virtual-try-on', '/contact', '/privacy', '/terms', ...db.prepare('SELECT slug FROM categories').all().map((c) => `/shop/${c.slug}`),
     ...db.prepare('SELECT slug FROM products').all().map((p) => `/product/${p.slug}`)];
   res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map((u) => `<url><loc>${SITE_URL}${u}</loc></url>`).join('')}</urlset>`);
 });

@@ -13,6 +13,7 @@ const routes = [
   [/^\/bag\/?$/, 'bag'],
   [/^\/wishlist\/?$/, 'wishlist'],
   [/^\/contact\/?$/, 'contact'],
+  [/^\/(privacy|terms)\/?$/, 'legal', ['doc']],
   [/^\/checkout\/?$/, 'checkout'],
   [/^\/account\/?$/, 'account', [], { tab: 'profile' }],
   [/^\/account\/(orders|addresses|wishlist|profile)\/?$/, 'account', ['tab']],
