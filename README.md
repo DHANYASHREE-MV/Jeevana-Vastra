@@ -82,6 +82,16 @@ Publish `dist/` to the `gh-pages` branch. Deep links work through `404.html`.
 
 Live site: https://dhanyashree-mv.github.io/Jeevana-Vastra/
 
+## Vercel / Netlify
+
+The repo includes `vercel.json` and `netlify.toml`. Import the GitHub repo and deploy with no settings to change:
+the build runs `npm run build:static`, publishes `dist/` at the root, and picks up the site's own address automatically.
+
+- **Vercel:** vercel.com → Add New → Project → import `Jeevana-Vastra` → Deploy.
+- **Netlify:** app.netlify.com → Add new site → Import an existing project → GitHub → `Jeevana-Vastra` → Deploy.
+
+Every push to `main` redeploys automatically.
+
 ## Structure
 
 ```

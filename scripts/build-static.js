@@ -15,7 +15,12 @@ const arg = (name, def) => { const i = process.argv.indexOf(`--${name}`); return
 let base = arg('base', '/').replace(/\\/g, '/');
 base = base.includes(':') ? base.split('/').filter(Boolean).pop() : base;
 base = `/${base.split('/').filter(Boolean).join('/')}/`.replace('//', '/');
-const site = (arg('site', `http://localhost:4000${base}`)).replace(/\/$/, '');
+// Public address for share cards, sitemap and canonical links: --site, else SITE_URL, else what the
+// host provides (Vercel: VERCEL_PROJECT_PRODUCTION_URL, Netlify: URL), else a local preview address.
+const hostUrl = process.env.SITE_URL
+  || (process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`)
+  || process.env.URL;
+const site = (arg('site', hostUrl ? `${hostUrl.replace(/\/$/, '')}${base}` : `http://localhost:4000${base}`)).replace(/\/$/, '');
 
 const ROOT = path.join(__dirname, '..');
 const PUBLIC = path.join(ROOT, 'public');
